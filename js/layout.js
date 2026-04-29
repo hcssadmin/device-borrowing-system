@@ -17,7 +17,13 @@ export function renderMenu(role) {
   }
 
   addLink("待處理請求", "/request.html")
-  addLink("已借出裝置", "/borrowed-device.html")
+  
+  if (role === "admin") {
+    addLink("已借出裝置", "/borrowed-device.html")
+  } else {
+    addLink("已借用裝置", "/borrowed-device.html")
+  }
+  
 }
 
 function addLink(text, href) {
