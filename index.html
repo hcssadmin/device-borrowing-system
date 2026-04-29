@@ -105,21 +105,17 @@
     location.reload()
   })
 
-  // ✅ 核心修復：初始化
   async function init() {
-    // ✅ VERY IMPORTANT：穩定 OAuth session（修閃爍）
-    const {
-      data: { session }
-    } = await supabase.auth.getSession()
+  const { data: { session } } = await supabase.auth.getSession()
 
-    if (session) {
-      userText.innerHTML = `登入使用者：${session.user.email}`
-      userText.appendChild(logoutBtn)
-    } else {
-      userText.innerHTML = `未登入`
-      userText.appendChild(loginBtn)
-    }
+  if (session) {
+    userText.textContent = `登入使用者：${session.user.email}`
+    userText.appendChild(logoutBtn)
+  } else {
+    userText.textContent = `未登入`
+    userText.appendChild(loginBtn)
   }
+}
 
   init()
 </script>
