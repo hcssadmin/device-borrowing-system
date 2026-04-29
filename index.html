@@ -78,55 +78,50 @@
 
   const supabase = createClient(
     'https://ejinjfirecaduuclyjaf.supabase.co',
-    '你的 anon key（你現在那串）'
+    '你的 anon key'
   )
 
   console.log("connected ✅")
 
-  // ✅ 建立 Login 按鈕（動態加，避免改很多 HTML）
-  const loginBtn = document.createElement("button")
-  loginBtn.innerText = "Login with Google"
-  loginBtn.className = "btn btn-primary ms-3"
-  document.querySelector('.navbar-text').appendChild(loginBtn)
+  const userText = document.querySelector('.navbar-text')
 
-  // ✅ Login
+  // ✅ 建按鈕（先建立，但不要 append）
+  const loginBtn = document.createElement("button")
+  loginBtn.innerText = "Login"
+  loginBtn.className = "btn btn-primary ms-2"
+
+  const logoutBtn = document.createElement("button")
+  logoutBtn.innerText = "Logout"
+  logoutBtn.className = "btn btn-danger ms-2"
+
   loginBtn.addEventListener("click", async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google'
     })
   })
 
-  // ✅ Logout 按鈕
-  const logoutBtn = document.createElement("button")
-  logoutBtn.innerText = "Logout"
-  logoutBtn.className = "btn btn-danger ms-2"
-  document.querySelector('.navbar-text').appendChild(logoutBtn)
-
   logoutBtn.addEventListener("click", async () => {
     await supabase.auth.signOut()
     location.reload()
   })
 
-  // ✅ 檢查登入狀態
-  async function checkUser() {
+  // ✅ 核心修復：初始化
+  async function init() {
+    // ✅ VERY IMPORTANT：穩定 OAuth session（修閃爍）
     const {
       data: { session }
     } = await supabase.auth.getSession()
 
-    const userText = document.querySelector('.navbar-text')
-
     if (session) {
-      userText.innerHTML = `
-        登入使用者：${session.user.email}
-      `
+      userText.innerHTML = `登入使用者：${session.user.email}`
+      userText.appendChild(logoutBtn)
     } else {
-      userText.innerHTML = `
-        未登入
-      `
+      userText.innerHTML = `未登入`
+      userText.appendChild(loginBtn)
     }
   }
 
-  checkUser()
+  init()
 </script>
 </body>
 </html>
