@@ -82,8 +82,23 @@
     logoutBtn.className = "btn btn-sm btn-danger"
 
     logoutBtn.onclick = async () => {
-      await supabase.auth.signOut()
-      window.location.href = "/index.html"
+
+      const { error } = await supabase.auth.signOut()
+    
+      if (error) {
+        console.error("Logout failed:", error)
+        return
+      }
+    
+      console.log("已成功登出")
+    
+      // ✅ 確保 session 已清
+      const { data: { session: newSession } } = await supabase.auth.getSession()
+    
+      if (!newSession) {
+        window.location.replace("/index.html")
+      }
+
     }
 
     userText.appendChild(logoutBtn)
