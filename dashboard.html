@@ -70,7 +70,9 @@
     .select('role')
     .eq('staff_id', session.user.id)
     .single()
-
+  
+  console.log("auth id:", session.user.id)
+  
   const role = data?.role || 'user'
 
   // ✅ Step 4：render menu（角色導航）
