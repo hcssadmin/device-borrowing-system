@@ -1,3 +1,11 @@
+// ✅ 載入 navbar
+export async function loadNavbar() {
+  const res = await fetch('/navbar.html')
+  const html = await res.text()
+
+  document.getElementById('navbar').innerHTML = html
+}
+
 export function renderMenu(role) {
   const menu = document.getElementById("menu")
   menu.innerHTML = ""
