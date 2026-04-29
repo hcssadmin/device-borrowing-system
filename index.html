@@ -78,14 +78,14 @@
 
   const supabase = createClient(
     'https://ejinjfirecaduuclyjaf.supabase.co',
-    '你的 anon key'
+    '你的 anon key（保留原本那串）'
   )
 
   console.log("connected ✅")
 
   const userText = document.querySelector('.navbar-text')
 
-  // ✅ 建按鈕（先建立，但不要 append）
+  // ✅ 建立按鈕（先建立，不馬上加進去）
   const loginBtn = document.createElement("button")
   loginBtn.innerText = "Login"
   loginBtn.className = "btn btn-primary ms-2"
@@ -94,28 +94,45 @@
   logoutBtn.innerText = "Logout"
   logoutBtn.className = "btn btn-danger ms-2"
 
+  // ✅ Login
   loginBtn.addEventListener("click", async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google'
     })
   })
 
+  // ✅ Logout
   logoutBtn.addEventListener("click", async () => {
     await supabase.auth.signOut()
     location.reload()
   })
 
-  async function init() {
-  const { data: { session } } = await supabase.auth.getSession()
+  // ✅ 更新 UI（統一處理）
+  function updateUI(session) {
+    userText.innerHTML = ""  // 清空
 
-  if (session) {
-    userText.textContent = `登入使用者：${session.user.email}`
-    userText.appendChild(logoutBtn)
-  } else {
-    userText.textContent = `未登入`
-    userText.appendChild(loginBtn)
+    if (session) {
+      const text = document.createTextNode(`登入使用者：${session.user.email} `)
+      userText.appendChild(text)
+      userText.appendChild(logoutBtn)
+    } else {
+      const text = document.createTextNode("未登入 ")
+      userText.appendChild(text)
+      userText.appendChild(loginBtn)
+    }
   }
-}
+
+  // ✅ 核心：監聽登入狀態（這是關鍵！！！）
+  supabase.auth.onAuthStateChange((event, session) => {
+    console.log("Auth event:", event)
+    updateUI(session)
+  })
+
+  // ✅ 初始載入（防止一開始顯示錯誤）
+  async function init() {
+    const { data: { session } } = await supabase.auth.getSession()
+    updateUI(session)
+  }
 
   init()
 </script>
