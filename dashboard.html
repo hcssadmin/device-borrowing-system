@@ -71,7 +71,10 @@
     .eq('staff_id', session.user.id)
     .single()
   
-  console.log("auth id:", session.user.id)
+
+console.log("data:", data)
+console.log("error:", error)
+
   
   const role = data?.role || 'user'
 
