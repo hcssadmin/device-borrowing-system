@@ -73,6 +73,15 @@
     </div>
   </div>
 </div>
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
 
+  const supabase = createClient(
+    'https://ejinjfirecaduuclyjaf.supabase.co',
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVqaW5qZmlyZWNhZHV1Y2x5amFmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc0MzkwMzMsImV4cCI6MjA5MzAxNTAzM30.gaFJqUBPGihbYaHgxaAyVRwnmazVWeSssnjTzUslXlw'
+  )
+
+  console.log("connected ✅")
+</script>
 </body>
 </html>
