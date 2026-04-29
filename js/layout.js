@@ -21,6 +21,11 @@ function addLink(text, href) {
   a.href = href
   a.innerText = text
 
+  // ✅ highlight 當前頁
+  if (window.location.pathname.includes(href)) {
+    a.classList.add("active")
+  }
+
   li.appendChild(a)
   document.getElementById("menu").appendChild(li)
 }
